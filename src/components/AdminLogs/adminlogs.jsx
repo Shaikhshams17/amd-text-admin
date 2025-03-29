@@ -144,7 +144,7 @@ const AdminLogs = () => {
                                 type="text"
                                 value={searchQuery}
                                 onChange={(e) => setSearchQuery(e.target.value)}
-                                className={`p-2 w-full rounded-xl border border-black bg-[#E6E6E6] text-gray-700 focus:outline-none ${searchQuery ? "pl-2" : "pl-10"
+                                className={`p-2 w-full rounded-xl border border-black bg-[#E6E6E6] text-gray-700 focus:outline-none ${searchQuery ? "pl-10" : "pl-10"
                                     }`} // Add padding if icon is visible
                             />
                         </div>

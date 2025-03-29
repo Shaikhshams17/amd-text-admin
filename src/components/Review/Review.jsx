@@ -1,20 +1,19 @@
 "use client"
 
 import React, { useState } from "react";
-import { useRouter } from "next/navigation"; // For redirect
-import { Search } from "lucide-react";
-import { Download } from "lucide-react";
-import { Check, X, Flag } from "lucide-react";  // Updated import for Check and X icons
+import { useRouter } from "next/navigation";
+import { Search, Download, Check, X, Flag } from "lucide-react";
 import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
-import { FaSortUp, FaSortDown } from "react-icons/fa"; // Import sort icons
-import { utils, writeFile } from "xlsx"; // For Excel download
+import { FaSortUp, FaSortDown } from "react-icons/fa";
+import { utils, writeFile } from "xlsx";
 
 const Review = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const reviewsPerPage = 6;
-  // Dummy review data
-  const dummyReviews = [
+
+  // State for reviews with unique IDs
+  const [reviews, setReviews] = useState([
     {
       reviewId: "A3J933",
       expert: "raihan",
@@ -29,65 +28,64 @@ const Review = () => {
     },
     {
       reviewId: "A3J935",
+      expert: "ali",
+      rating: "3 STARS",
+      content: "alex@example.com",
+    },
+    {
+      reviewId: "A3J936",
       expert: "alex",
       rating: "3 STARS",
       content: "alex@example.com",
     },
     {
-      reviewId: "A3J935",
+      reviewId: "A3J937",
       expert: "alex",
       rating: "3 STARS",
       content: "alex@example.com",
     },
     {
-      reviewId: "A3J935",
+      reviewId: "A3J938",
       expert: "alex",
       rating: "3 STARS",
       content: "alex@example.com",
     },
     {
-      reviewId: "A3J935",
+      reviewId: "A3J939",
       expert: "alex",
       rating: "3 STARS",
       content: "alex@example.com",
     },
     {
-      reviewId: "A3J935",
+      reviewId: "A3J940",
       expert: "alex",
       rating: "3 STARS",
       content: "alex@example.com",
     },
     {
-      reviewId: "A3J935",
+      reviewId: "A3J941",
       expert: "alex",
       rating: "3 STARS",
       content: "alex@example.com",
     },
     {
-      reviewId: "A3J935",
+      reviewId: "A3J942",
       expert: "alex",
       rating: "3 STARS",
       content: "alex@example.com",
     },
     {
-      reviewId: "A3J935",
+      reviewId: "A3J943",
       expert: "alex",
       rating: "3 STARS",
       content: "alex@example.com",
     },
-    {
-      reviewId: "A3J935",
-      expert: "alex",
-      rating: "3 STARS",
-      content: "alex@example.com",
-    },
-    // ... additional review data
-  ];
+  ]);
 
-  const sortConfig = { key: "", direction: "asc" }; // Add sorting config for sorting functionality
+  const sortConfig = { key: "", direction: "asc" };
 
   // Filter reviews based on search query
-  const filteredReviews = dummyReviews.filter((review) =>
+  const filteredReviews = reviews.filter((review) =>
     review.expert.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
@@ -96,7 +94,7 @@ const Review = () => {
     const csvContent =
       "data:text/csv;charset=utf-8," +
       [
-        ["REVIEW ID", "EXPERT", "RATING", "CONTENT"], // CSV Header
+        ["REVIEW ID", "EXPERT", "RATING", "CONTENT"],
         ...filteredReviews.map((review) => [
           review.reviewId,
           review.expert,
@@ -107,7 +105,6 @@ const Review = () => {
         .map((e) => e.join(","))
         .join("\n");
 
-    // Create Blob and Download CSV
     const encodedUri = encodeURI(csvContent);
     const link = document.createElement("a");
     link.setAttribute("href", encodedUri);
@@ -120,8 +117,10 @@ const Review = () => {
   const handleAction = (action, reviewId) => {
     if (action === "approve") {
       alert(`✅ Review ${reviewId} has been approved.`);
+      setReviews(prev => prev.filter(review => review.reviewId !== reviewId));
     } else if (action === "reject") {
       alert(`❌ Review ${reviewId} has been rejected.`);
+      setReviews(prev => prev.filter(review => review.reviewId !== reviewId));
     } else if (action === "flag") {
       alert(`Review ${reviewId} has been flagged for review.`);
     }
@@ -137,28 +136,27 @@ const Review = () => {
 
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
-  // Handle dropdown toggle
+  // Dummy functions for unused features
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [statusFilter, setStatusFilter] = useState("");
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [selectedSession, setSelectedSession] = useState(null);
+  
   const toggleDropdown = () => setIsDropdownOpen(!isDropdownOpen);
-
-  // Handle status selection
   const handleStatusSelect = (status) => {
     setStatusFilter(status);
-    setIsDropdownOpen(false); // Close dropdown after selecting
+    setIsDropdownOpen(false);
   };
-
-  // Open Popup with session details
   const openPopup = (session) => {
     setSelectedSession(session);
     setIsPopupOpen(true);
   };
-
-  // Close the popup
   const closePopup = () => {
     setIsPopupOpen(false);
     setSelectedSession(null);
   };
 
-  // Export sessions to Excel format
+  // Export to Excel
   const exportToExcel = () => {
     const ws = utils.json_to_sheet(filteredReviews);
     const wb = utils.book_new();
@@ -174,15 +172,14 @@ const Review = () => {
           <h1 className="text-2xl font-bold text-[#191919]">REVIEWS/FEEDBACK</h1>
 
           {/* Export as Excel Button */}
-           <div className="ml-auto mt-6">
-                      <button
-                        onClick={exportToExcel}
-                        className="p-2 bg-black text-white rounded flex items-center gap-2"
-                      >
-                        <Download size={16} />
-                      </button>
-                    
-                  </div>
+          <div className="ml-auto mt-6">
+            <button
+              onClick={exportToExcel}
+              className="p-2 bg-black text-white rounded flex items-center gap-2"
+            >
+              <Download size={16} />
+            </button>
+          </div>
         </div>
 
         {/* Search Bar */}
@@ -211,19 +208,17 @@ const Review = () => {
                     <span className="uppercase">{key.replace("_", " ")}</span>
                     <div className="flex flex-col items-center">
                       <FaSortUp
-                        onClick={() => sortTable(key)}  // Handle sorting
-                        className={`text-xs cursor-pointer ml-[5.8rem] ${sortConfig.key === key && sortConfig.direction === "asc" ? "text-gray-200" : "text-black"}`}
+                        className="text-xs cursor-pointer ml-[5.8rem] text-black"
                       />
                       <FaSortDown
-                        onClick={() => sortTable(key)}  // Handle sorting
-                        className={`text-xs -mt-1 cursor-pointer ml-[5.8rem] ${sortConfig.key === key && sortConfig.direction === "desc" ? "text-gray-200" : "text-black"}`}
+                        className="text-xs -mt-1 cursor-pointer ml-[5.8rem] text-black"
                       />
                     </div>
                   </div>
-                  {index !== 3 && <div className="absolute right-0 top-1/2 transform -translate-y-1/2 h-9 border-l border-black"></div>} {/* Separator between columns */}
+                  {index !== 3 && <div className="absolute right-0 top-1/2 transform -translate-y-1/2 h-9 border-l border-black"></div>}
                 </th>
               ))}
-              <th className="p-3 text-center font-semibold">ACTIONS</th> {/* Added the "ACTIONS" header */}
+              <th className="p-3 text-center font-semibold">ACTIONS</th>
             </tr>
           </thead>
           <tbody>
@@ -235,21 +230,18 @@ const Review = () => {
                   <td className="p-3 text-center">{review.rating}</td>
                   <td className="p-3 text-center">{review.content}</td>
                   <td className="p-3 flex justify-center items-center gap-3">
-                    {/* Approve Button */}
                     <button
                       onClick={() => handleAction("approve", review.reviewId)}
                       className="bg-[#60DF7C] text-white px-3 py-2 rounded-lg text-lg cursor-pointer"
                     >
                       <Check size={18} strokeWidth={2} className="text-white" />
                     </button>
-                    {/* Reject Button */}
                     <button
                       onClick={() => handleAction("reject", review.reviewId)}
                       className="bg-[#FF2A2A] text-white px-3 py-2 rounded-lg text-lg cursor-pointer"
                     >
                       <X size={18} strokeWidth={2} className="text-white" />
                     </button>
-                    {/* Flag Button */}
                     <button
                       onClick={() => handleAction("flag", review.reviewId)}
                       className="bg-black text-white px-3 py-2 rounded-lg text-lg cursor-pointer"
@@ -278,7 +270,6 @@ const Review = () => {
         {/* Pagination */}
         <div className="flex justify-center items-center mt-4">
           <div className="flex gap-2 p-2 border rounded-lg bg-white shadow-lg shadow-gray-400">
-            {/* Previous Button */}
             <button
               onClick={() => paginate(currentPage - 1)}
               disabled={currentPage === 1}
@@ -290,7 +281,6 @@ const Review = () => {
               <MdKeyboardArrowLeft size={20} />
             </button>
 
-            {/* Page Numbers with Ellipsis */}
             {(() => {
               const totalPages = Math.ceil(filteredReviews.length / reviewsPerPage);
               const pages = [];
@@ -367,7 +357,6 @@ const Review = () => {
               return pages;
             })()}
 
-            {/* Next Button */}
             <button
               onClick={() => paginate(currentPage + 1)}
               disabled={currentPage === Math.ceil(filteredReviews.length / reviewsPerPage)}

@@ -16,14 +16,14 @@ const AdminLogs = () => {
     const reviewsPerPage = 6;
 
     const dummySessions = [
-        { loginEmail: "raihan@example.com", timestamp: "2025-03-20", actionType: "Setting Update", status: "Success", description: "Updated API key for Tap Payments in Payment Setting" },
-        { loginEmail: "john@example.com", timestamp: "2025-03-18", actionType: "Discount Management", status: "Not Successful", description: "Updated API key for Tap Payments in Payment Setting" },
-        { loginEmail: "alex@example.com", timestamp: "2025-03-19", actionType: "Setting Update", status: "Success", description: "Updated API key for Tap Payments in Payment Setting" },
-        { loginEmail: "raihan@example.com", timestamp: "2025-03-17", actionType: "Discount Management", status: "Not Successful", description: "Updated API key for Tap Payments in Payment Setting" },
-        { loginEmail: "michael@example.com", timestamp: "2025-03-16", actionType: "Setting Update", status: "Success", description: "Updated API key for Tap Payments in Payment Setting" },
-        { loginEmail: "sara@example.com", timestamp: "2025-03-21", actionType: "Expert Request", status: "Not Successful", description: "Updated API key for Tap Payments in Payment Setting" },
-        { loginEmail: "alex@example.com", timestamp: "2025-03-15", actionType: "Discount Management", status: "Success", description: "Updated API key for Tap Payments in Payment Setting" },
-        { loginEmail: "raihan@example.com", timestamp: "2025-03-14", actionType: "Setting Update", status: "Not Successful", description: "Updated API key for Tap Payments in Payment Setting" },
+        { loginEmail: "raihan@example.com", timestamp: "2025-03-20T14:22:00Z", actionType: "Setting Update", status: "Success", description: "Updated API key for Tap Payments in Payment Setting" },
+        { loginEmail: "john@example.com", timestamp: "2025-03-18T14:22:00Z", actionType: "Discount Management", status: "Not Successful", description: "Updated API key for Tap Payments in Payment Setting" },
+        { loginEmail: "alex@example.com", timestamp: "2025-03-19T14:22:00Z", actionType: "Setting Update", status: "Success", description: "Updated API key for Tap Payments in Payment Setting" },
+        { loginEmail: "raihan@example.com", timestamp: "2025-03-17T14:22:00Z", actionType: "Discount Management", status: "Not Successful", description: "Updated API key for Tap Payments in Payment Setting" },
+        { loginEmail: "michael@example.com", timestamp: "2025-03-16T14:22:00Z", actionType: "Setting Update", status: "Success", description: "Updated API key for Tap Payments in Payment Setting" },
+        { loginEmail: "sara@example.com", timestamp: "2025-03-21T14:22:00Z", actionType: "Expert Request", status: "Not Successful", description: "Updated API key for Tap Payments in Payment Setting" },
+        { loginEmail: "alex@example.com", timestamp: "2025-03-15T14:22:00Z", actionType: "Discount Management", status: "Success", description: "Updated API key for Tap Payments in Payment Setting" },
+        { loginEmail: "raihan@example.com", timestamp: "2025-03-14T14:22:00Z", actionType: "Setting Update", status: "Not Successful", description: "Updated API key for Tap Payments in Payment Setting" },
     ];
 
     const uniqueExperts = ["All", ...new Set(dummySessions.map((session) => session.timestamp))];
@@ -108,7 +108,7 @@ const AdminLogs = () => {
                     <div className="flex gap-4 items-end">
                         {/* Select Expert */}
                         <div className="w-52">
-                            <h2 className="text-[#191919] mb-1">Select Expert</h2>
+                            <h2 className="text-[#191919] mb-1">Select Time</h2>
                             <select
                                 value={selectedExpert}
                                 onChange={(e) => setSelectedExpert(e.target.value)}
@@ -138,13 +138,8 @@ const AdminLogs = () => {
 
                         {/* Search by Login Email */}
                         <div className="w-56 relative">
-                            <h2 className="text-[#191919] mb-1">Search by Login Email</h2>
-                            {!searchQuery && ( // Show icon only when input is empty
-                                <Search
-                                    className="absolute left-3 top-10 transform text-gray-400"
-                                    size={18}
-                                />
-                            )}
+                            <h2 className="text-[#191919] mb-1">Search by Email</h2>
+                            <Search className="absolute left-3 bottom-3 transform text-gray-200 bg-red-500 rounded-full border border-red-500" size={18} />
                             <input
                                 type="text"
                                 value={searchQuery}
@@ -220,7 +215,7 @@ const AdminLogs = () => {
                                     className="hover:bg-gray-100 border-b border-gray-200 cursor-pointer"
                                 >
                                     <td className="p-3 text-center w-[20%] break-words">{session.loginEmail}</td>
-                                    <td className="p-3 text-center w-[15%]">{session.timestamp}</td>
+                                    <td className="p-3 text-center w-[20.5%]">{session.timestamp}</td>
                                     <td className="p-3 text-center w-[20%]">{session.actionType}</td>
                                     <td
                                         className={`p-3 text-center w-[15%] ${session.status === "Success"

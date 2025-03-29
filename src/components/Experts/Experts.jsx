@@ -105,7 +105,7 @@ const Experts = () => {
   };
 
   return (
-    <div className="flex justify-center w-full h-full p-6 bg-white">
+    <div className="flex justify-center w-full h-[45rem] p-6 bg-white">
       <div className="w-11/12">
         <h1 className="text-3xl font-bold mb-6 text-[#191919]">EXPERTS</h1>
 
